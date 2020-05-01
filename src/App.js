@@ -35,6 +35,7 @@ const Styled = styled.div`
     .exp {
       margin-top: 5vh;
       margin-bottom: 5vh;
+      font-size: 1.5rem;
     }
   }
   .button {
@@ -42,9 +43,11 @@ const Styled = styled.div`
     border: 1px solid #c43333;
     background-color: #c43333;
   }
+  .image {
+    width: 50vh;
+  }
 `;
 const Header = styled.div``;
-
 const InputDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -121,9 +124,7 @@ const App = () => {
           <Col className="header">
             <Header>동물상 테스트</Header>
           </Col>
-          <Col className="row exp">
-            <h2>인공지능을 이용한 동물상 TEST</h2>
-          </Col>
+          <Col className="row exp">인공지능을 이용한 동물상 TEST</Col>
           <Col className="row">
             <ButtonGroup className="gender">
               <Button variant="secondary">남자</Button>
@@ -145,9 +146,11 @@ const App = () => {
             ) : null}
             {state.imagePreviewUrl && (
               <img
+                className="image"
                 id="img_preview"
                 src={state.imagePreviewUrl}
                 alt="Your Face"
+                width="100%"
               />
             )}
             {isLoading && <Spinner animation="border" role="status" />}
