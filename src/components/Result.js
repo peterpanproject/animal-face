@@ -23,7 +23,7 @@ const Result = (results) => {
           ? results.results.map((result) => (
               <Row className="barDiv">
                 <Col xs={1}> {result.className}</Col>
-                <Col xs={11}>
+                <Col xs={10}>
                   <ProgressBar
                     striped
                     className="bar"
@@ -42,14 +42,3 @@ const Result = (results) => {
 };
 
 export default Result;
-
-{
-  /* {result &&
-              result.map((e) => (
-                <div>
-                  {e.className}
-                  {Math.round(e.probability * 100)}
-                  <p />
-                </div>
-              ))} */
-}
