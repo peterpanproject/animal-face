@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import * as tmImage from "@teachablemachine/image";
-import "./App.css";
 import styled from "styled-components";
-// import Switch from "./components/Switch";
 import {
   Container,
   Row,
@@ -11,31 +9,40 @@ import {
   Button,
   Spinner,
 } from "react-bootstrap";
-import DropdownToggle from "react-bootstrap/DropdownToggle";
+import Result from "./components/Result";
 
 const Styled = styled.div`
   .header {
     display: flex;
     width: 100%;
-    height: 8.3vh;
+    height: 7.3vh;
     justify-content: center;
     align-items: center;
     color: white;
     font-size: 25px;
     font-weight: 600;
-    background-color: #c43333;
+    background-color: #5e4232;
+    border-radius: 10px;
   }
   .row {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 3vh;
     .input {
       flex-direction: column;
+      background-color: #f6f7fa;
+      border-radius: 20px;
+      padding: 25px;
     }
     .exp {
       margin-top: 5vh;
       margin-bottom: 5vh;
       font-size: 1.5rem;
+    }
+    .spinner {
+      margin-top: 2vh;
+      margin-bottom: 2vh;
     }
   }
   .button {
@@ -45,6 +52,8 @@ const Styled = styled.div`
   }
   .image {
     width: 50vh;
+    margin-top: 2vh;
+    margin-bottom: 5vh;
   }
 `;
 const Header = styled.div``;
@@ -66,7 +75,7 @@ const Input = styled.input.attrs((props) => ({ type: "file" }))`
 `;
 
 const App = () => {
-  const [result, setResult] = useState([]);
+  const [results, setResults] = useState([]);
   const [male, setMale] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [isLoading, setIsLoading] = useState(null);
@@ -94,11 +103,6 @@ const App = () => {
     reader.readAsDataURL(file);
     setIsDone(true);
     init().then(() => predict());
-    // console.log(e.target.files[0]);
-  };
-
-  const onChangeGender = () => {
-    setMale(!male);
   };
 
   // Load the image model and setup the webcam
@@ -112,11 +116,11 @@ const App = () => {
     const prediction = await model.predict(
       document.getElementById("img_preview")
     );
-    await setResult(prediction);
+    await setResults(prediction);
     setIsLoading(false);
     console.log("loaded");
   }
-
+  console.log(male);
   return (
     <Styled>
       <Container>
@@ -127,10 +131,13 @@ const App = () => {
           <Col className="row exp">인공지능을 이용한 동물상 TEST</Col>
           <Col className="row">
             <ButtonGroup className="gender">
-              <Button variant="secondary">남자</Button>
-              <Button variant="secondary">여자</Button>
+              <Button onClick={() => setMale(true)} variant="secondary">
+                남자
+              </Button>
+              <Button onClick={() => setMale(false)} variant="secondary">
+                여자
+              </Button>
             </ButtonGroup>
-            {/* <Switch isChecked={isChecked} changeGender={onChangeGender} /> */}
           </Col>
           <Col className="row input">
             {!isDone ? (
@@ -153,16 +160,12 @@ const App = () => {
                 width="100%"
               />
             )}
-            {isLoading && <Spinner animation="border" role="status" />}
-            {result &&
-              result.map((e) => (
-                <div>
-                  {e.className}
-                  {Math.round(e.probability * 100)}
-                  <p />
-                </div>
-              ))}
+            {isLoading && (
+              <Spinner className="spinner" animation="border" role="status" />
+            )}
+            {results && <Result results={results} />}
           </Col>
+          <Col> </Col>
           <Col className="row">
             <Button className="button">中文</Button>
             <Button className="button">ENG</Button>
